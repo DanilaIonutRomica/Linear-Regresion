@@ -8,7 +8,13 @@ X1 = [1 1 1 1 1];
 X = [X1; X2; X3;X4;].'
 B =inv(X.'*X)*X.'*Y 
 
-Preditc_Model_Val = X * B
+x_11 = 1.001;
+x_22 = 0.05;
+x_33 = rand(1,1);
+
+Preditc_Model_Val = @(x_1,x_2,x_3) B(1) + x_1*B(2)+x_2*B(3)+x_3*B(4)
+
+Preditc_Model_Val_Ex = Preditc_Model_Val(x_11,x_22,x_33)
 
 %[0.5 0.5 0.5] *B new entry times B matrix
 [m n] = size(Y);
@@ -22,7 +28,7 @@ StandardErrorByB4 = 0;
 average_Y = mean(Y);
 
 for i=1:m
-    SumOfSquaredResiduals=SumOfSquaredResiduals+(Y(i)- Preditc_Model_Val(i))^2;
+    SumOfSquaredResiduals=SumOfSquaredResiduals+(Y(i)- Preditc_Model_Val(X2(i),X3(i),X4(i)))^2;
     VarianceInData=VarianceInData+(Y(i)- average_Y)^2;
     StandardErrorByB1 = StandardErrorByB1 + ((X1(i)*B(1)) - Y(i))^2;
     StandardErrorByB2 = StandardErrorByB2 + ((X2(i)*B(2)+X1(i)*B(1) ) - Y(i))^2;
